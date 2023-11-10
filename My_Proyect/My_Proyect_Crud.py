@@ -7,20 +7,40 @@ def create_client(new_client): # Función Crear
         get_list_client_names()
     else:
         print('The Client {} already exists'.format(new_client))
-    
+
+
 def read_client(search_client): # Función Leer
-    if search_client in clients:
-        print('Client Exists')
-        
+    for search, client in enumerate(clients, 1):
+        print('{}: {}'.format(search, client))
+
+
+def update_client(client_name):  # Función Actualizar
+    if client_name in clients:
+        while(True):
+            upd_client = input('Name to Update: ').capitalize()
+            if upd_client in clients:
+                print('Client Exists')
+            else:
+                index = clients.index(client_name)
+                clients[index] = upd_client
+                get_list_client_names()
+                break
     else:
         print('Client Not Exists')
-    
-def update_client(client_name,upd_client):  # Función Actualizar
-    clients = clients.replace(client_name,upd_client)
-    
-def delete_client(client_name, del_client): # Función Eliminar
+
+
+def delete_client(client_name): # Función Eliminar
     if client_name in clients:
-        clients = clients.replace(del_client,"")
+        while(True):
+            del_client = input('Name to Delete: ').capitalize()
+            if del_client in clients:
+                clients.remove(del_client)
+                get_list_client_names()
+                break
+            else:
+                print('Clients no Exists')
+                get_list_client_names()
+
 
 def welcome():  # Presentación del Programa
     print('\n\t\t\t\t\tWELCOME TO UNIVERSITY DEL VALLE - COL')
@@ -30,49 +50,39 @@ def welcome():  # Presentación del Programa
     print('[R]ead Client o User: ')
     print('[U]pdate Client o User: ')
     print('[D]elate Client o User: ')
-    
+
+
 def get_name_client():  # Creamos una función que permite preguntar nombre cliente
     return input("Enter your name: ")
+
 
 def get_list_client_names():    # Creamos una función que nos imprima la base de datos
     print(clients)
 
+
 def add_comma():    # Creamos una función para agregar "," y nos modifique la base de datos
     global clients
     clients += ", "
+
 
 if __name__ == '__main__':
     welcome()
     option = input('\nType option desired client: ').upper()
     if option == 'C':
         client_name = get_name_client().capitalize()
-        #add_comma()
         create_client(client_name)
-        
+
     elif option == 'R':
         client_name = get_name_client().capitalize()
         read_client(client_name)
-        get_list_client_names()
-        
+
     elif option == 'U':
         client_name = get_name_client().capitalize()
-        if client_name in clients:
-            upd_client = input('Name to Update: ').capitalize()
-            update_client(client_name,upd_client)
-            get_list_client_names()
-        else:
-            print('User no Exists')
-        
+        update_client(client_name)
+
     elif option == 'D':
         client_name = get_name_client().capitalize()
-        if client_name in clients:
-            del_client = input('Name to Delete: ').capitalize()
-            if del_client in clients:
-                delete_client(client_name,del_client)
-            else:
-                print('Clients no Exists')
-            get_list_client_names()
-        else:
-            print('User no Exists')
+        delete_client(client_name)
+
     else:
         print('Command Invalid')
