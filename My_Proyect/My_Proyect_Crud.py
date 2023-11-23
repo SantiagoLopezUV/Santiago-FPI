@@ -1,45 +1,66 @@
 #   My Proyect CRUD = Crear, Leer, Actualizar, Eliminar
-clients = ['Luis', 'Kevin', 'Santiago']
+clients = {
+    1: 'Luis',
+    2: 'Kevin',
+    3: 'Santiago'
+    }
 
 def create_client(new_client): # Función Crear
-    if new_client not in clients: # Not in | Pregunta si el primer parametro no esta en el segundo
-        clients.append(new_client)
+    if new_client not in clients.values():
+        clients.setdefault(len(clients) + 1, new_client)
+        #clients[len(clients)+1] = new_client
         get_list_client_names()
     else:
         print('The Client {} already exists'.format(new_client))
 
 
 def read_client(search_client): # Función Leer
-    for search, client in enumerate(clients, 1):
-        print('{}: {}'.format(search, client))
+    if search_client in clients.values():
+        print(clients.keys())
+        for i in range(0,len(clients)):
+            print('The Client {}: is {}'.format((i+1),\
+                clients.get(i+1)))
+    else:
+        print("You don't have access")
 
 
 def update_client(client_name):  # Función Actualizar
-    if client_name in clients:
+    if client_name in clients.values():
         while(True):
             upd_client = input('Name to Update: ').capitalize()
-            if upd_client in clients:
+            if upd_client in clients.values():
                 print('Client Exists')
             else:
-                index = clients.index(client_name)
-                clients[index] = upd_client
+                for keys, values in clients.items():
+                    if values == client_name:
+                        clients[keys] = upd_client
+                        break
+                    else:
+                        continue
                 get_list_client_names()
                 break
     else:
-        print('Client Not Exists')
+        print("You don't have access")
 
 
 def delete_client(client_name): # Función Eliminar
-    if client_name in clients:
+    if client_name in clients.values():
         while(True):
             del_client = input('Name to Delete: ').capitalize()
-            if del_client in clients:
-                clients.remove(del_client)
+            if del_client in clients.values():
+                for keys, values in clients.items():
+                    if values == del_client:
+                        clients.pop(keys)
+                        break
+                    else:
+                        continue
                 get_list_client_names()
                 break
             else:
                 print('Clients no Exists')
                 get_list_client_names()
+    else:
+        print("You don't have access")
 
 
 def welcome():  # Presentación del Programa
